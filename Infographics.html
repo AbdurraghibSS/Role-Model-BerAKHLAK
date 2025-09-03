@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografis BerAKHLAK</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .infographic {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .infographic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00f5ff, #00d4aa, #7b68ee, #ff6b9d, #c471ed, #12c2e9, #f093fb);
+            animation: gradientShift 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes gradientShift {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid transparent;
+            background: linear-gradient(45deg, #00f5ff, #7b68ee, #ff6b9d);
+            padding: 6px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: profileGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes profileGlow {
+            0% { box-shadow: 0 20px 40px rgba(0,245,255,0.3); }
+            100% { box-shadow: 0 20px 40px rgba(255,107,157,0.3); }
+        }
+
+        .profile-info {
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .profile-name {
+            font-size: 2.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f5ff 0%, #7b68ee 50%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-shadow: 0 0 30px rgba(0,245,255,0.3);
+        }
+
+        .profile-title {
+            font-size: 1.4rem;
+            color: #00f5ff;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .profile-desc {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .title {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f5ff 0%, #7b68ee 50%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 50px rgba(0,245,255,0.5);
+            position: relative;
+        }
+
+        .subtitle {
+            font-size: 1.6rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 35px;
+            margin-bottom: 50px;
+        }
+
+        .value-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .value-card:hover::before {
+            left: 100%;
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+            border-color: var(--card-color);
+        }
+
+        .value-card.berorientasi { --card-color: #ff6b9d; }
+        .value-card.akuntabel { --card-color: #00f5ff; }
+        .value-card.kompeten { --card-color: #7b68ee; }
+        .value-card.harmonis { --card-color: #00d4aa; }
+        .value-card.loyal { --card-color: #f093fb; }
+        .value-card.adaptif { --card-color: #12c2e9; }
+        .value-card.kolaboratif { --card-color: #c471ed; }
+
+        .value-letter {
+            font-size: 5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--card-color);
+            text-shadow: 0 0 20px var(--card-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .value-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-desc {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            line-height: 1.7;
+        }
+
+        .focus-section {
+            background: linear-gradient(135deg, rgba(0,245,255,0.1) 0%, rgba(123,104,238,0.1) 50%, rgba(255,107,157,0.1) 100%);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            border-radius: 30px;
+            padding: 60px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .focus-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .focus-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #00f5ff 0%, #7b68ee 50%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 1;
+        }
+
+        .focus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .focus-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .focus-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .focus-card-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+        }
+
+        .focus-icon {
+            font-size: 3rem;
+            margin-right: 20px;
+            filter: drop-shadow(0 0 10px currentColor);
+        }
+
+        .problem {
+            background: linear-gradient(135deg, rgba(255,107,157,0.2) 0%, rgba(255,107,157,0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,107,157,0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            text-align: center;
+        }
+
+        .solution {
+            background: linear-gradient(135deg, rgba(0,245,255,0.2) 0%, rgba(0,245,255,0.1) 100%);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,245,255,0.3);
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .problem-title, .solution-title {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: #ffffff;
+        }
+
+        .suggestions {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .suggestions li {
+            padding: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            text-align: justify;
+        }
+
+        .suggestions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00f5ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px #00f5ff;
+        }
+
+        .download-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            position: relative;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #00f5ff 0%, #7b68ee 50%, #ff6b9d 100%);
+            color: white;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,245,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0,245,255,0.4);
+        }
+
+        .download-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(255,107,157,0.1));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-circle:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 2s;
+        }
+
+        .floating-circle:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .profile-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-info {
+                text-align: center;
+            }
+            
+            .focus-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .infographic, .focus-section {
+                padding: 30px;
+            }
+            
+            .profile-image {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .profile-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+    </div>
+
+    <div class="container">
+        <!-- Infografis 1: Penjelasan BerAKHLAK -->
+        <div class="infographic">
+            <div class="header">
+                <div class="profile-section">
+                    <img src="anies.jpeg" alt="Anies Baswedan" class="profile-image">
+                    <div class="profile-info">
+                        <h2 class="profile-name">Anies Rasyid Baswedan</h2>
+                        <p class="profile-title">Gubernur DKI Jakarta (2017-2022)</p>
+                        <p class="profile-desc">Akademisi, pendidik, dan politikus Indonesia yang dikenal dengan kepemimpinan visioner dalam transformasi digital dan pelayanan publik. Mengusung nilai-nilai BerAKHLAK sebagai fondasi reformasi birokrasi modern, memanfaatkan data dan teknologi untuk menciptakan pemerintahan yang responsif dan inovatif.</p>
+                    </div>
+                </div>
+                
+                <h1 class="title">BerAKHLAK</h1>
+                <p class="subtitle">Nilai-Nilai Dasar ASN pada Seorang Anies Baswedan</p>
+            </div>
+
+            <div class="values-grid">
+                <div class="value-card berorientasi">
+                    <div class="value-letter">Ber</div>
+                    <h3 class="value-title">Berorientasi Pelayanan</h3>
+                    <p class="value-desc">Menghadirkan solusi bagi masyarakat melalui Indonesia Mengajar, Jakarta Smart City, dan JakLingko, yang memudahkan akses pendidikan, layanan publik, serta transportasi terintegrasi secara lebih responsif</p>
+                </div>
+
+                <div class="value-card akuntabel">
+                    <div class="value-letter">A</div>
+                    <h3 class="value-title">Akuntabel</h3>
+                    <p class="value-desc">Transparan melaporkan program dan pencapaian melalui media sosial serta forum publik, bertanggung jawab menjaga kepercayaan masyarakat dengan laporan kinerja rutin, terukur, dan dapat dipertanggungjawabkan</p>
+                </div>
+
+                <div class="value-card kompeten">
+                    <div class="value-letter">K</div>
+                    <h3 class="value-title">Kompeten</h3>
+                    <p class="value-desc">Berpendidikan doktoral di Ilmu Politik, pernah menjadi rektor termuda Universitas Paramadina, serta memiliki rekam jejak kepemimpinan strategis yang menunjukkan kapasitas dan keahlian relevan dengan kebutuhan zaman</p>
+                </div>
+
+                <div class="value-card" style="visibility: hidden;"></div>
+                <div class="value-card harmonis">
+
+                    <div class="value-letter">H</div>
+                    <h3 class="value-title">Harmonis</h3>
+                    <p class="value-desc">Membangun kerja sama lintas etnis dan agama, menghormati keberagaman lewat program inklusif seperti Festival Condet dan Betawi Festival, serta menciptakan lingkungan kerja pemerintahan yang harmonis</p>
+                </div>
+
+                <div class="value-card" style="visibility: hidden;"></div>
+
+                <div class="value-card loyal">
+                    <div class="value-letter">L</div>
+                    <h3 class="value-title">Loyal</h3>
+                    <p class="value-desc">Konsisten mengabdi untuk bangsa melalui peran sebagai akademisi, aktivis pendidikan, menteri, dan gubernur, selalu mengutamakan kepentingan publik di atas kepentingan pribadi maupun politik</p>
+                </div>
+
+                <div class="value-card adaptif">
+                    <div class="value-letter">A</div>
+                    <h3 class="value-title">Adaptif</h3>
+                    <p class="value-desc">Mampu beradaptasi dari akademisi ke pemerintahan, memanfaatkan teknologi dan media sosial untuk komunikasi publik, serta menghadirkan inovasi layanan yang sesuai dengan tantangan zaman</p>
+                </div>
+
+                <div class="value-card kolaboratif">
+                    <div class="value-letter">K</div>
+                    <h3 class="value-title">Kolaboratif</h3>
+                    <p class="value-desc">Membangun Indonesia Mengajar melalui kolaborasi lintas pihak, serta bekerja sama dengan berbagai stakeholder dalam program pembangunan Jakarta yang komprehensif, berkelanjutan, dan bermanfaat luas bagi masyarakat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infografis 2: Nilai yang Sering Terlupakan -->
+        <div class="focus-section">
+            <h2 class="focus-title">Nilai BerAKHLAK yang Masih Kurang <br> Pada Saya Pribadi</h2>
+            
+            <div class="focus-grid">
+                <div class="focus-card">
+                    <h3 class="focus-card-title">
+                        <span class="focus-icon">🤝</span>
+                        Berorientasi Pelayanan
+                    </h3>
+                    
+                    <div class="problem">
+                        <h4 class="problem-title">🔍 Area yang perlu diperbaiki :</h4>
+                        <p>Respons terhadap kebutuhan mendadak kadang terlambat karena menunggu instruksi/permintaan, belum proaktif mendeteksi kebutuhan informasi.</p>
+                    </div>
+
+                    <div class="solution">
+                        <h4 class="solution-title">💡 Saran Perbaikan :</h4>
+                        <ul class="suggestions">
+                            <li><b>Cek rutin kebutuhan data </b>— dengan adanya satu data komdigi diharapkan layanan penyediaan data dapat terpenuhi.</li>
+                            <li><b>Buat daftar isu prioritas</b> — mencatat topik yang sering diminta agar mudah menyiapkan data sewaktu-waktu.</li>
+                            <li><b>Gunakan template analisis cepat</b> — menyiapkan format standar grafik/tabel sehingga tinggal mengisi data terbaru.</li>
+                            <li><b>Set reminder monitoring</b> — meluangkan waktu harian/pekanan untuk mengecek perkembangan data penting.</li>
+                            <li><b>Bangun komunikasi informal</b> — aktif bertanya pada rekan kerja soal isu terkini agar lebih cepat mengetahui kebutuhan.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="focus-card">
+                    <h3 class="focus-card-title">
+                        <span class="focus-icon">👥</span>
+                        Kolaboratif
+                    </h3>
+                    
+                    <div class="problem">
+                        <h4 class="problem-title">🔍 Area yang perlu diperbaiki :</h4>
+                        <p>Masih cenderung bekerja secara sendiri dan belum terbiasa meminta masukan, sehingga hasil analisis terkadang kurang komprehensif.</p>
+                    </div>
+
+                    <div class="solution">
+                        <h4 class="solution-title">💡 Saran Perbaikan :</h4>
+                        <ul class="suggestions">
+                            <li><b>Diskusi singkat lintas tim</b> — sebelum finalisasi analisis, minta masukan cepat dari rekan bidang lain.</li>
+                            <li><b>Buat kelompok kecil kerja bersama</b> — kerjakan sebagian analisis dalam tim kecil agar perspektif lebih beragam.</li>
+                            <li><b>Gunakan dokumen kolaboratif</b> — memanfaatkan platform Jira dalam proses analisis untuk setiap pekerjaan yang dilakukan.</li>
+                            <li><b>Latih kebiasaan berbagi progres</b> — bagikan update sementara (draft) untuk mengundang komentar, bukan hanya hasil akhir.g</li>
+                            <li><b>Tetapkan target kolaborasi minimal</b> — misalnya setiap analisis melibatkan minimal satu rekan lintas bidang.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02)); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: #00f5ff; font-weight: 700;">🚀 Tugas 1 Individu - Agenda 2</h3>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); line-height: 1.8; max-width: 800px; margin: 0 auto;">
+                    Role Model BerAKHLAK
+                </p>
+                <div style="margin-top: 20px; font-style: italic; color: rgba(255,255,255,0.7);">
+                    dibuat oleh: Abdur Raghib S. Suweleh <br>
+                    Angkatan 10 - Kelompok 1 - NDH 01  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function downloadPDF() {
+            const button = document.querySelector('.download-btn');
+            const originalText = button.innerHTML;
+            
+            // Show loading state
+            button.innerHTML = '⏳ Sedang memproses...';
+            button.classList.add('loading');
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                // Get both infographic elements
+                const infographic1 = document.querySelector('.infographic');
+                const infographic2 = document.querySelector('.focus-section');
+                
+                // Capture first infographic
+                const canvas1 = await html2canvas(infographic1, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: 'rgba(15,15,35,0.95)',
+                    width: infographic1.scrollWidth,
+                    height: infographic1.scrollHeight
+                });
+                
+                // Add first page
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight1 = (canvas1.height * imgWidth) / canvas1.width;
+                
+                if (imgHeight1 <= pageHeight) {
+                    // Fits on one page
+                    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight1);
+                } else {
+                    // Multiple pages needed for first infographic
+                    let heightLeft = imgHeight1;
+                    let position = 0;
+                    
+                    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight1);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight1;
+                        pdf.addPage();
+                        pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight1);
+                        heightLeft -= pageHeight;
+                    }
+                }
+                
+                // Capture second infographic
+                const canvas2 = await html2canvas(infographic2, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: 'rgba(15,15,35,0.95)',
+                    width: infographic2.scrollWidth,
+                    height: infographic2.scrollHeight
+                });
+                
+                // Add second infographic
+                pdf.addPage();
+                const imgHeight2 = (canvas2.height * imgWidth) / canvas2.width;
+                
+                if (imgHeight2 <= pageHeight) {
+                    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 0, 0, imgWidth, imgHeight2);
+                } else {
+                    let heightLeft = imgHeight2;
+                    let position = 0;
+                    
+                    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight2);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight2;
+                        pdf.addPage();
+                        pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight2);
+                        heightLeft -= pageHeight;
+                    }
+                }
+                
+                // Save the PDF
+                pdf.save('Infografis-BerAKHLAK-Anies-Baswedan-Futuristic.pdf');
+                
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Terjadi kesalahan saat membuat PDF. Silakan coba lagi.');
+            } finally {
+                // Restore button
+                button.innerHTML = originalText;
+                button.classList.remove('loading');
+            }
+        }
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add parallax effect to floating elements
+            document.addEventListener('mousemove', function(e) {
+                const circles = document.querySelectorAll('.floating-circle');
+                const mouseX = e.clientX / window.innerWidth;
+                const mouseY = e.clientY / window.innerHeight;
+                
+                circles.forEach((circle, index) => {
+                    const speed = (index + 1) * 0.5;
+                    const x = mouseX * speed * 10;
+                    const y = mouseY * speed * 10;
+                    circle.style.transform = `translate(${x}px, ${y}px) rotate(${mouseX * 10}deg)`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
